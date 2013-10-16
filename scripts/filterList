@@ -1,0 +1,12 @@
+#! /usr/bin/env python
+# -*-coding: utf8-*-
+# file: filterList
+
+
+import os
+import sys
+fol = os.path.expanduser('~/Development/python/listFilter/python')
+sys.path.insert(0, fol)
+import filterList
+filterList.main()
+# /usr/bin/env python -c "import os; print os.chdir('/Users/sanjeevkumar/Development/python/listFilter/python/'); import filterList; filterList.main();" $*
