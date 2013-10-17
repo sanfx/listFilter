@@ -3,10 +3,34 @@
 # file: filterList
 
 
-import os
+import os, __builtin__
 import sys
-fol = os.path.expanduser('~/Development/python/listFilter/python')
-sys.path.insert(0, fol)
-import filterList
-filterList.main()
+
+try:
+	import argparse
+	ARGPARSE_OK = True
+except:
+	sys.argv
+	ARGPARSE_OK = False
+
+
+if ARGPARSE_OK:
+	parser = argparse.ArgumentParser()
+	parser.add_argument('list', nargs='?', help='List to filter')
+	parser.add_argument('filter', help='Pass filter you think items in list may be starting with.')
+	args = parser.parse_args()
+	MODULES_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "python")
+	sys.path.insert(0, MODULES_PATH)
+	import filterList
+	# print type(args), args
+	filterList.main(args)
 # /usr/bin/env python -c "import os; print os.chdir('/Users/sanjeevkumar/Development/python/listFilter/python/'); import filterList; filterList.main();" $*
+
+class NameSpace(object):
+	"""Mock for argparse's NameSpace
+	"""
+	def __init__(self, lst=None, flter=None):
+		super(NameSpace, self).__init__()
+		self._filter = flter
+		self._lst = lst
+		

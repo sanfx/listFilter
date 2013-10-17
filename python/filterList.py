@@ -1,11 +1,10 @@
 #!/usr/bin/python
 
 import sys
-import ast
 import logging
 
 
-class ItemNotString(Exception):
+class FilterListException(Exception):
 	pass
 
 
@@ -23,7 +22,7 @@ class FilterList(object):
 			if type(item) == str:
 				continue
 			else:
-				raise ItemNotString("%i item '%s' is not of type string" % (index+1, item))
+				raise FilterListException("%i item '%s' is not of type string" % (index+1, item))
 		return True
 
 	def filterList(self, lst):
@@ -40,24 +39,16 @@ class FilterList(object):
 				return
 			return filteredList
 
-def main():
+def main(args):
 	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 	# logging.basicConfig(filename='myapp.log', level=logging.INFO)
-	try:
-		filterby = sys.argv[2]
-	except IndexError:
-		filterby = None
-	flObj = FilterList(filterby)
-	lst = None
-	try:
-		lst = sys.argv[1]
-	except IndexError:
-		logging.info(" No List passed to filter")
-	if lst:
-		result = flObj.filterList(ast.literal_eval(lst))
-		if result:
-			logging.info(result)
+	result = None
+	filterby = args.filter
 
+	result = FilterList(filterby).filterList(eval(args.list))
+	if result:
+		logging.info(result)
+		
 
 if __name__ == "__main__":
 	main()
