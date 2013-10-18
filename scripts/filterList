@@ -23,7 +23,7 @@ class Namespace(object):
 import filterList
 
 try:
-	import argpare
+	import argparse
 	ARGPARSE_OK = True
 except:
 	sys.argv
