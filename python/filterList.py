@@ -42,10 +42,9 @@ class FilterList(object):
 def main(args):
 	logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 	# logging.basicConfig(filename='myapp.log', level=logging.INFO)
-	result = None
 	filterby = args.filter
-
-	result = FilterList(filterby).filterList(eval(args.list))
+	flObj = FilterList(filterby)
+	result = flObj.filterList(eval(args.lst))
 	if result:
 		logging.info(result)
 		

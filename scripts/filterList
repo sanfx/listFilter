@@ -6,8 +6,24 @@
 import os, __builtin__
 import sys
 
+MODULES_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "python")
+sys.path.insert(0, MODULES_PATH)
+
+class Namespace(object):
+	"""Mock for argparse's NameSpace
+	"""
+	def __init__(self, lst=None, flter=None):
+		super(Namespace, self).__init__()
+		self.filter = flter
+		self.lst = lst
+
+	def __repr__(self):
+		return 'Namespace(filter=self.filter, lst = self.lst)'
+
+import filterList
+
 try:
-	import argparse
+	import argpare
 	ARGPARSE_OK = True
 except:
 	sys.argv
@@ -16,21 +32,21 @@ except:
 
 if ARGPARSE_OK:
 	parser = argparse.ArgumentParser()
-	parser.add_argument('list', nargs='?', help='List to filter')
+	parser.add_argument('lst', nargs='?', help='List to filter')
 	parser.add_argument('filter', help='Pass filter you think items in list may be starting with.')
 	args = parser.parse_args()
-	MODULES_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "python")
-	sys.path.insert(0, MODULES_PATH)
-	import filterList
-	# print type(args), args
 	filterList.main(args)
+else:
+	try:
+		args = Namespace(lst=sys.argv[-2], flter=sys.argv[-1])
+		filterList.main(args)
+	except IndexError:
+		print "Misisng arguments, i.e. the first item should be a list second item should be a letter you want to filter the list by."
+
+
+
+# args = Namespace(lst='["Hi","By"]', flter='B')
+
 # /usr/bin/env python -c "import os; print os.chdir('/Users/sanjeevkumar/Development/python/listFilter/python/'); import filterList; filterList.main();" $*
 
-class NameSpace(object):
-	"""Mock for argparse's NameSpace
-	"""
-	def __init__(self, lst=None, flter=None):
-		super(NameSpace, self).__init__()
-		self._filter = flter
-		self._lst = lst
 		
